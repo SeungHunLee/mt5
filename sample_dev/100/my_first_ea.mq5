@@ -181,9 +181,9 @@ void OnTick()
         }
      }
 
-  // 주문이 2개이상이면 종료
+  // Potions >= 2 then Close
   if(PositionsTotal() >= 2){
-   Alert("5. 주문이 2개이상이면 종료 ", PositionsTotal());
+   Alert("5. Close : Potions >= 2 then Close ", PositionsTotal());
    return;
   }
 
