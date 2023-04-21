@@ -45,7 +45,7 @@ int OnInit()
       STP = STP*10;
       TKP = TKP*10;
      }
-   return(0);
+   return(INIT_SUCCEEDED);
   }
 //+------------------------------------------------------------------+
 //| Expert deinitialization function                                 |
