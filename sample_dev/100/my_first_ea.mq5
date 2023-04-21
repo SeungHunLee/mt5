@@ -164,6 +164,11 @@ void OnTick()
    bool Buy_opened=false;  // variable to hold the result of Buy opened position
    bool Sell_opened=false; // variables to hold the result of Sell opened position
 
+   Alert("1. PositionsTotal() ", PositionsTotal());
+   Alert("2. PositionSelect(_Symbol) ", PositionSelect(_Symbol));
+   Alert("3. POSITION_TYPE ", POSITION_TYPE);
+   Alert("4. PositionGetInteger(POSITION_TYPE) ", PositionGetInteger(POSITION_TYPE));
+
    if(PositionSelect(_Symbol)==true) // we have an opened position
      {
       if(PositionGetInteger(POSITION_TYPE)==POSITION_TYPE_BUY)
@@ -175,6 +180,12 @@ void OnTick()
          Sell_opened=true; // It is a Sell
         }
      }
+
+  // 주문이 2개이상이면 종료
+  if(PositionsTotal() >= 2){
+   Alert("5. 주문이 2개이상이면 종료 ", PositionsTotal());
+   return;
+  }
 
 // Copy the bar close price for the previous bar prior to the current bar, that is Bar 1
    p_close=mrate[1].close;  // bar 1 close price
@@ -257,7 +268,7 @@ void OnTick()
          mrequest.magic = EA_Magic;                                          // Order Magic Number
          mrequest.type= ORDER_TYPE_SELL;                                     // Sell Order
          mrequest.type_filling = ORDER_FILLING_FOK;                          // Order execution type
-         mrequest.deviation=100;                                             // Deviation from current price
+         mrequest.deviation=100;                                             // Deviation from current price 
          //--- send order
          OrderSend(mrequest,mresult);
          // get the result code
