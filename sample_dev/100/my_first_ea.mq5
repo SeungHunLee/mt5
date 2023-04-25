@@ -7,13 +7,13 @@
 #property link      "http://www.mql5.com"
 #property version   "1.00"
 //--- input parameters
-input int      StopLoss=30;      // Stop Loss
-input int      TakeProfit=100;   // Take Profit
+input int      StopLoss=100;      // Stop Loss
+input int      TakeProfit=150;   // Take Profit
 input int      ADX_Period=8;     // ADX Period
 input int      MA_Period=8;      // Moving Average Period
 input int      EA_Magic=12345;   // EA Magic Number
 input double   Adx_Min=22.0;     // Minimum ADX Value
-input double   Lot=0.1;          // Lots to Trade
+input double   Lot=0.05;          // Lots to Trade
 //--- Other parameters
 int adxHandle; // handle for our ADX indicator
 int maHandle;  // handle for our Moving Average indicator
@@ -40,11 +40,13 @@ int OnInit()
 //--- Let us handle currency pairs with 5 or 3 digit prices instead of 4
    STP = StopLoss;
    TKP = TakeProfit;
+   /*
    if(_Digits==5 || _Digits==3)
      {
       STP = STP*10;
       TKP = TKP*10;
      }
+   */  
    return(INIT_SUCCEEDED);
   }
 //+------------------------------------------------------------------+
@@ -214,8 +216,10 @@ void OnTick()
          ZeroMemory(mrequest);
          mrequest.action = TRADE_ACTION_DEAL;                                  // immediate order execution
          mrequest.price = NormalizeDouble(latest_price.ask,_Digits);           // latest ask price
-         mrequest.sl = NormalizeDouble(latest_price.ask - STP*_Point,_Digits); // Stop Loss
-         mrequest.tp = NormalizeDouble(latest_price.ask + TKP*_Point,_Digits); // Take Profit
+         //mrequest.sl = NormalizeDouble(latest_price.ask - STP*_Point,_Digits); // Stop Loss
+         //mrequest.tp = NormalizeDouble(latest_price.ask + TKP*_Point,_Digits); // Take Profit
+         mrequest.sl = NormalizeDouble(latest_price.ask - STP,_Digits); // Stop Loss
+         mrequest.tp = NormalizeDouble(latest_price.ask + TKP,_Digits); // Take Profit         
          mrequest.symbol = _Symbol;                                            // currency pair
          mrequest.volume = Lot;                                                 // number of lots to trade
          mrequest.magic = EA_Magic;                                             // Order Magic Number
@@ -261,8 +265,10 @@ void OnTick()
          ZeroMemory(mrequest);
          mrequest.action=TRADE_ACTION_DEAL;                                // immediate order execution
          mrequest.price = NormalizeDouble(latest_price.bid,_Digits);           // latest Bid price
-         mrequest.sl = NormalizeDouble(latest_price.bid + STP*_Point,_Digits); // Stop Loss
-         mrequest.tp = NormalizeDouble(latest_price.bid - TKP*_Point,_Digits); // Take Profit
+         // mrequest.sl = NormalizeDouble(latest_price.bid + STP*_Point,_Digits); // Stop Loss
+         // mrequest.tp = NormalizeDouble(latest_price.bid - TKP*_Point,_Digits); // Take Profit
+         mrequest.sl = NormalizeDouble(latest_price.bid + STP,_Digits); // Stop Loss
+         mrequest.tp = NormalizeDouble(latest_price.bid - TKP,_Digits); // Take Profit         
          mrequest.symbol = _Symbol;                                          // currency pair
          mrequest.volume = Lot;                                              // number of lots to trade
          mrequest.magic = EA_Magic;                                          // Order Magic Number
@@ -287,3 +293,4 @@ void OnTick()
    return;
   }
 //+------------------------------------------------------------------+
+
